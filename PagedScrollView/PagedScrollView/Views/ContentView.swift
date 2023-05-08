@@ -9,13 +9,28 @@ import SwiftUI
 
 struct ContentView: View {
     var body: some View {
-        VStack {
-            Image(systemName: "globe")
-                .imageScale(.large)
-                .foregroundColor(.accentColor)
-            Text("Hello, world!")
+        GeometryReader { geometry in
+            PagedScrollView {
+                LazyVStack(spacing: 0) {
+                    ForEach(0..<4, id: \.self) { _ in
+                        Rectangle()
+                            .frame(width: geometry.size.width, height: geometry.size.height)
+                            .foregroundColor(randomColor)
+                    }
+                }
+            }
         }
-        .padding()
+        .ignoresSafeArea()
+    }
+    
+    private var randomColor: Color {
+        let red: CGFloat = CGFloat(arc4random_uniform(UINT32_MAX)) / Double(UINT32_MAX)
+        let green: CGFloat = CGFloat(arc4random_uniform(UINT32_MAX)) / Double(UINT32_MAX)
+        let blue: CGFloat = CGFloat(arc4random_uniform(UINT32_MAX)) / Double(UINT32_MAX)
+
+        return Color(uiColor: UIColor(
+            red: red, green: green, blue: blue, alpha: 1)
+        )
     }
 }
 

@@ -11,7 +11,7 @@
 		8A2C658A2A090D9A00738C87 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A2C65892A090D9A00738C87 /* ContentView.swift */; };
 		8A2C658C2A090D9B00738C87 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 8A2C658B2A090D9B00738C87 /* Assets.xcassets */; };
 		8A2C658F2A090D9B00738C87 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 8A2C658E2A090D9B00738C87 /* Preview Assets.xcassets */; };
-		8A2C65992A090E7900738C87 /* _PagedScrollView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A2C65982A090E7900738C87 /* _PagedScrollView.swift */; };
+		8A2C65992A090E7900738C87 /* PagedScrollView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A2C65982A090E7900738C87 /* PagedScrollView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -20,7 +20,7 @@
 		8A2C65892A090D9A00738C87 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
 		8A2C658B2A090D9B00738C87 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		8A2C658E2A090D9B00738C87 /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
-		8A2C65982A090E7900738C87 /* _PagedScrollView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = _PagedScrollView.swift; sourceTree = "<group>"; };
+		8A2C65982A090E7900738C87 /* PagedScrollView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PagedScrollView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -53,7 +53,7 @@
 		8A2C65862A090D9A00738C87 /* PagedScrollView */ = {
 			isa = PBXGroup;
 			children = (
-				8A2C65972A090E5100738C87 /* _PagedScrollView */,
+				8A2C65972A090E5100738C87 /* PagedScrollView */,
 				8A2C65962A090E4200738C87 /* Views */,
 				8A2C65872A090D9A00738C87 /* PagedScrollViewApp.swift */,
 				8A2C658B2A090D9B00738C87 /* Assets.xcassets */,
@@ -78,12 +78,12 @@
 			path = Views;
 			sourceTree = "<group>";
 		};
-		8A2C65972A090E5100738C87 /* _PagedScrollView */ = {
+		8A2C65972A090E5100738C87 /* PagedScrollView */ = {
 			isa = PBXGroup;
 			children = (
-				8A2C65982A090E7900738C87 /* _PagedScrollView.swift */,
+				8A2C65982A090E7900738C87 /* PagedScrollView.swift */,
 			);
-			path = _PagedScrollView;
+			path = PagedScrollView;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -102,6 +102,8 @@
 			dependencies = (
 			);
 			name = PagedScrollView;
+			packageProductDependencies = (
+			);
 			productName = PagedScrollView;
 			productReference = 8A2C65842A090D9A00738C87 /* PagedScrollView.app */;
 			productType = "com.apple.product-type.application";
@@ -130,6 +132,8 @@
 				Base,
 			);
 			mainGroup = 8A2C657B2A090D9A00738C87;
+			packageReferences = (
+			);
 			productRefGroup = 8A2C65852A090D9A00738C87 /* Products */;
 			projectDirPath = "";
 			projectRoot = "";
@@ -156,7 +160,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				8A2C65992A090E7900738C87 /* _PagedScrollView.swift in Sources */,
+				8A2C65992A090E7900738C87 /* PagedScrollView.swift in Sources */,
 				8A2C658A2A090D9A00738C87 /* ContentView.swift in Sources */,
 				8A2C65882A090D9A00738C87 /* PagedScrollViewApp.swift in Sources */,
 			);
