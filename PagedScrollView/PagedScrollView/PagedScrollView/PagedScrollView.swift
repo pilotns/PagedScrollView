@@ -67,11 +67,11 @@ extension _UIScrollViewWrapper {
         child.translatesAutoresizingMaskIntoConstraints = false
         
         NSLayoutConstraint.activate([
-            child.topAnchor.constraint(equalTo: parent.contentLayoutGuide.topAnchor),
-            child.bottomAnchor.constraint(equalTo: parent.contentLayoutGuide.bottomAnchor),
-            child.trailingAnchor.constraint(equalTo: parent.contentLayoutGuide.trailingAnchor),
-            child.leadingAnchor.constraint(equalTo: parent.contentLayoutGuide.leadingAnchor),
-            child.widthAnchor.constraint(equalTo: parent.frameLayoutGuide.widthAnchor)
+            child.safeAreaLayoutGuide.topAnchor.constraint(equalTo: parent.contentLayoutGuide.topAnchor),
+            child.safeAreaLayoutGuide.bottomAnchor.constraint(equalTo: parent.contentLayoutGuide.bottomAnchor),
+            child.safeAreaLayoutGuide.trailingAnchor.constraint(equalTo: parent.contentLayoutGuide.trailingAnchor),
+            child.safeAreaLayoutGuide.leadingAnchor.constraint(equalTo: parent.contentLayoutGuide.leadingAnchor),
+            child.safeAreaLayoutGuide.widthAnchor.constraint(equalTo: parent.frameLayoutGuide.widthAnchor)
         ])
     }
 }
@@ -104,8 +104,8 @@ extension _UIScrollViewWrapper {
             NSLayoutConstraint.activate([
                 scrollView.topAnchor.constraint(equalTo: self.view.topAnchor),
                 scrollView.bottomAnchor.constraint(equalTo: self.view.bottomAnchor),
-                scrollView.leadingAnchor.constraint(equalTo: self.view.leadingAnchor),
-                scrollView.trailingAnchor.constraint(equalTo: self.view.trailingAnchor)
+                scrollView.safeAreaLayoutGuide.leadingAnchor.constraint(equalTo: self.view.leadingAnchor),
+                scrollView.safeAreaLayoutGuide.trailingAnchor.constraint(equalTo: self.view.trailingAnchor)
             ])
         }
     }
