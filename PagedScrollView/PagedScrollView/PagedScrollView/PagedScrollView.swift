@@ -8,75 +8,107 @@
 import SwiftUI
 
 struct PagedScrollView<Content: View>: View {
-    let content: () -> Content
+    let axis: Axis
+    let content: (CGSize) -> Content
     
-    init(@ViewBuilder content: @escaping () -> Content) {
+    init(
+        _ axis: Axis = .vertical,
+        @ViewBuilder content: @escaping (CGSize) -> Content
+    ) {
+        self.axis = axis
         self.content = content
     }
     
     var body: some View {
         GeometryReader { geometry in
-            _UIScrollViewWrapper(content: content)
-                .environment(\.parentSize, geometry.size)
+            _UIScrollViewWrapper(
+                axis: axis,
+                content: content(geometry.size)
+            )
+            .environment(\.parentSize, geometry.size)
         }
     }
 }
 
-private struct _UIScrollViewWrapper<Content: View>: UIViewControllerRepresentable {
-    let content: () -> Content
-    
-    init(content: @escaping () -> Content) {
-        self.content = content
-    }
-    
-    func makeUIViewController(context: Context) -> PagedViewController {
-        let controller = PagedViewController()
-        let hostingController = controller.hostingController
+private extension PagedScrollView {
+    struct _UIScrollViewWrapper: UIViewControllerRepresentable {
+        let axis: Axis
+        let content: Content
         
-        hostingController.rootView = AnyView(self.content())
-        let contentSize = controller.hostingController.sizeThatFits(
-            in: context.environment.parentSize
-        )
+        init(axis: Axis, content: Content) {
+            self.axis = axis
+            self.content = content
+        }
         
-        hostingController.view.frame.size = contentSize
-        controller.scrollView.addSubview(hostingController.view)
+        func makeUIViewController(context: Context) -> PagedViewController {
+            let controller = PagedViewController()
+            let scrollView = controller.scrollView
+            let hostingController = controller.hostingController
+            
+            scrollView.addSubview(hostingController.view)
+            
+            makeConstraints(
+                of: hostingController.view,
+                to: scrollView
+            )
+            
+            return controller
+        }
         
-        makeConstraints(
-            of: hostingController.view,
-            to: controller.scrollView
-        )
+        func updateUIViewController(_ controller: PagedViewController, context: Context) {
+            controller.hostingController.rootView = AnyView(
+                self.layout
+            )
+        }
         
-        return controller
-    }
-    
-    func updateUIViewController(_ controller: PagedViewController, context: Context) {
-        let hostingController = controller.hostingController
-
-        hostingController.rootView = AnyView(self.content())
-        let contentSize = controller.hostingController.sizeThatFits(
-            in: context.environment.parentSize
-        )
-        
-        hostingController.view.frame.size = contentSize
+        @ViewBuilder
+        private var layout: some View {
+            switch axis {
+            case .horizontal:
+                LazyHStack(spacing: 0) {
+                    self.content
+                }
+                
+            case .vertical:
+                LazyVStack(spacing: 0) {
+                    self.content
+                }
+            }
+        }
     }
 }
 
-extension _UIScrollViewWrapper {
+private extension PagedScrollView._UIScrollViewWrapper {
     func makeConstraints(of child: UIView, to parent: UIScrollView) {
         parent.translatesAutoresizingMaskIntoConstraints = false
         child.translatesAutoresizingMaskIntoConstraints = false
         
+        let axisSpecificConstraint: NSLayoutConstraint
+        
+        switch axis {
+        case .horizontal:
+            axisSpecificConstraint = child.safeAreaLayoutGuide.heightAnchor
+                .constraint(equalTo: parent.frameLayoutGuide.heightAnchor)
+        case .vertical:
+            axisSpecificConstraint = child.safeAreaLayoutGuide.widthAnchor
+                .constraint(equalTo: parent.frameLayoutGuide.widthAnchor)
+        }
+        
         NSLayoutConstraint.activate([
-            child.safeAreaLayoutGuide.topAnchor.constraint(equalTo: parent.contentLayoutGuide.topAnchor),
-            child.safeAreaLayoutGuide.bottomAnchor.constraint(equalTo: parent.contentLayoutGuide.bottomAnchor),
-            child.safeAreaLayoutGuide.trailingAnchor.constraint(equalTo: parent.contentLayoutGuide.trailingAnchor),
-            child.safeAreaLayoutGuide.leadingAnchor.constraint(equalTo: parent.contentLayoutGuide.leadingAnchor),
-            child.safeAreaLayoutGuide.widthAnchor.constraint(equalTo: parent.frameLayoutGuide.widthAnchor)
+            child.safeAreaLayoutGuide.topAnchor
+                .constraint(equalTo: parent.contentLayoutGuide.topAnchor),
+            child.safeAreaLayoutGuide.bottomAnchor
+                .constraint(equalTo: parent.contentLayoutGuide.bottomAnchor),
+            child.safeAreaLayoutGuide.trailingAnchor
+                .constraint(equalTo: parent.contentLayoutGuide.trailingAnchor),
+            child.safeAreaLayoutGuide.leadingAnchor
+                .constraint(equalTo: parent.contentLayoutGuide.leadingAnchor),
+            axisSpecificConstraint
         ])
     }
 }
 
-extension _UIScrollViewWrapper {
+private extension PagedScrollView._UIScrollViewWrapper {
     class PagedViewController: UIViewController {
         lazy var scrollView: UIScrollView = {
             let scrollView = UIScrollView()
@@ -104,8 +136,8 @@ extension _UIScrollViewWrapper {
             NSLayoutConstraint.activate([
                 scrollView.topAnchor.constraint(equalTo: self.view.topAnchor),
                 scrollView.bottomAnchor.constraint(equalTo: self.view.bottomAnchor),
-                scrollView.safeAreaLayoutGuide.leadingAnchor.constraint(equalTo: self.view.leadingAnchor),
-                scrollView.safeAreaLayoutGuide.trailingAnchor.constraint(equalTo: self.view.trailingAnchor)
+                scrollView.leadingAnchor.constraint(equalTo: self.view.leadingAnchor),
+                scrollView.trailingAnchor.constraint(equalTo: self.view.trailingAnchor)
             ])
         }
     }
